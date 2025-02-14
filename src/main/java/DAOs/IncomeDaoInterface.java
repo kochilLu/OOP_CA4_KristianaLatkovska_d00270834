@@ -12,6 +12,8 @@ public interface IncomeDaoInterface {
     //returns a list of Income type objects which refer to all fields in the "Income" table of the database
 
     void addNewIncome(Income newIncome) throws DaoException;
+    //a field in the database's "Income" table is added based on the passed in Income type object
+
     void deleteExistingIncome(int existingIncomeId) throws DaoException;
 
 }

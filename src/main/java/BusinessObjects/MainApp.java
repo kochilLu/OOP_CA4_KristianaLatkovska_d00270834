@@ -8,6 +8,7 @@ import DAOs.IncomeDaoInterface;
 import DAOs.MySqlExpenseDao;
 import DAOs.MySqlIncomeDao;
 import DTOs.Expense;
+import DTOs.Income;
 import Exceptions.DaoException;
 
 public class MainApp {
@@ -39,7 +40,10 @@ public class MainApp {
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //INCOME
             //viewing all income
-            System.out.println("List of all income: " + IIncomeDao.getAllIncome());
+            //System.out.println("List of all income: " + IIncomeDao.getAllIncome());
+            displayAllIncome(IIncomeDao.getAllIncome());
+
+
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
@@ -65,4 +69,21 @@ public class MainApp {
 
         System.out.println("-----------------------------------------------------------------------");
     }
+
+    //method for neatly displaying a list of Income objects
+    public static void displayAllIncome(List<Income> incomeList)
+    {
+        System.out.println("\nINCOME:");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("Id\tTitle\t\t\t\t\tAmount Earned\tDate");
+        System.out.println("-----------------------------------------------------------------------");
+
+        for(Income inc : incomeList) //goes through the list of Income type objects
+        {
+            System.out.printf("%d\t%-20s\t%-12.2f\t%s\n", inc.getId(), inc.getTitle(), inc.getAmountEarned(), inc.getDate());
+        }
+
+        System.out.println("-----------------------------------------------------------------------");
+    }
+
 }
