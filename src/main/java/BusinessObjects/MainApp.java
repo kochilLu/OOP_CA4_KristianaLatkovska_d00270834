@@ -43,7 +43,11 @@ public class MainApp {
             //System.out.println("List of all income: " + IIncomeDao.getAllIncome());
             displayAllIncome(IIncomeDao.getAllIncome());
 
-
+            //adding a new income
+            Income inc = new Income("bake sale", 34.22, LocalDate.of(2025,1,3));
+            IIncomeDao.addNewIncome(inc);
+            //checking to see any changes
+            displayAllIncome(IIncomeDao.getAllIncome());
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement

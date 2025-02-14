@@ -3,10 +3,7 @@ package DAOs;
 import DTOs.Income;
 import Exceptions.DaoException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +75,45 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDaoInterface{
     @Override
     public void addNewIncome(Income newIncome) throws DaoException
     {
-        //...
+        //initiating variables
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "INSERT INTO income Values(null,?,?,?)"; //1st value is null, because it is auto-incremented in the database
+            preparedStatement = connection.prepareStatement(query);
+
+            //adding values to the query to complete it
+            preparedStatement.setString(1,newIncome.getTitle()); //adds the income's title
+            preparedStatement.setDouble(2,newIncome.getAmountEarned()); //adds the income's money amount
+            preparedStatement.setDate(3, Date.valueOf(newIncome.getDate())); //adds the income's date of occurrence
+
+            //executing the query
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new DaoException("addNewIncomeSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("addNewIncome() " + e.getMessage());
+            }
+        }
     }
 
     @Override
