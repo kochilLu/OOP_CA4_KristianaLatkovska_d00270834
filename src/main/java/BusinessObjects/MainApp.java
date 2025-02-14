@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import DAOs.ExpenseDaoInterface;
+import DAOs.IncomeDaoInterface;
 import DAOs.MySqlExpenseDao;
+import DAOs.MySqlIncomeDao;
 import DTOs.Expense;
 import Exceptions.DaoException;
 
@@ -13,12 +15,16 @@ public class MainApp {
     public static void main(String[] args) {
 
         ExpenseDaoInterface IExpenseDao = new MySqlExpenseDao();
+        IncomeDaoInterface IIncomeDao = new MySqlIncomeDao();
 
         try
         {
+            //assuming that all teh passed in parameters are valid values, tests:
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //EXPENSES
             //viewing all expenses
             //System.out.println("List of all expenses: " + IExpenseDao.getAllExpenses());
-            displayAllExpenses(IExpenseDao.getAllExpenses());
+            //displayAllExpenses(IExpenseDao.getAllExpenses());
 
             //adding a new expense
             //Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
@@ -27,9 +33,13 @@ public class MainApp {
             //displayAllExpenses(IExpenseDao.getAllExpenses());
 
             //deleting an existing expense
-            IExpenseDao.deleteExistingExpense(6);
+            //IExpenseDao.deleteExistingExpense(6);
             //checking to see any changes
-            displayAllExpenses(IExpenseDao.getAllExpenses());
+            //displayAllExpenses(IExpenseDao.getAllExpenses());
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //INCOME
+            //viewing all income
+            System.out.println("List of all income: " + IIncomeDao.getAllIncome());
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
