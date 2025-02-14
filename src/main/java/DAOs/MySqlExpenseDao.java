@@ -3,10 +3,7 @@ package DAOs;
 import DTOs.Expense;
 import Exceptions.DaoException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +76,47 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
     @Override
     public void addNewExpense(Expense newExpense) throws DaoException
     {
-        //...
+        //initiating variables
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "INSERT INTO expenses Values(null,?,?,?,?)"; //1st value is null, because it is auto-incremented in the database
+            preparedStatement = connection.prepareStatement(query);
+
+            //adding values to the query to complete it
+            preparedStatement.setString(1,newExpense.getTittle()); //adds the expense's title
+            preparedStatement.setString(2,newExpense.getCategory()); //adds the expense's category
+            preparedStatement.setDouble(3,newExpense.getAmountSpent()); //adds the expense's money amount
+            preparedStatement.setDate(4, Date.valueOf(newExpense.getDate())); //adds the expense's date of occurrence
+
+            //executing the query
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new DaoException("addNewExpenseSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("addNewExpense() " + e.getMessage());
+            }
+        }
     }
 
     @Override

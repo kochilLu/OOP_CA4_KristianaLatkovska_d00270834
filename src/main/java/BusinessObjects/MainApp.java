@@ -1,5 +1,6 @@
 package BusinessObjects;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import DAOs.ExpenseDaoInterface;
@@ -11,13 +12,20 @@ public class MainApp {
 
     public static void main(String[] args) {
 
-        //testing whether the displayAllExpenses(List<Expense> expenseList) method works
-
         ExpenseDaoInterface IExpenseDao = new MySqlExpenseDao();
 
         try
         {
+            //viewing all expenses
+            //System.out.println("List of all expenses: " + IExpenseDao.getAllExpenses());
             displayAllExpenses(IExpenseDao.getAllExpenses());
+
+            //adding a new expense
+            Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
+            IExpenseDao.addNewExpense(exp);
+            //checking to see if the new expense has been added
+            displayAllExpenses(IExpenseDao.getAllExpenses());
+
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
@@ -34,6 +42,7 @@ public class MainApp {
         System.out.println("\nEXPENSES:");
         System.out.println("-----------------------------------------------------------------------");
         System.out.println("Id\tTitle\t\t\t\t\tCategory\t\tAmount Spent\tDate");
+        System.out.println("-----------------------------------------------------------------------");
 
         for(Expense exp : expenseList) //goes through the list of Expense type objects
         {
@@ -42,5 +51,4 @@ public class MainApp {
 
         System.out.println("-----------------------------------------------------------------------");
     }
-
 }

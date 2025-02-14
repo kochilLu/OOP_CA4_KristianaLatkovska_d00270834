@@ -12,6 +12,8 @@ public interface ExpenseDaoInterface {
     //returns a list of Expense objects which refer to all the currently existing expenses on the database
 
     public void addNewExpense(Expense newExpense) throws DaoException;
+    //provides an Expense type object to add as an "Expense" table's field in the database
+
     public void deleteExistingExpense(int existingExpenseId) throws DaoException;
 
 }
