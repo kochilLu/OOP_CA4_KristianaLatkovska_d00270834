@@ -21,11 +21,15 @@ public class MainApp {
             displayAllExpenses(IExpenseDao.getAllExpenses());
 
             //adding a new expense
-            Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
-            IExpenseDao.addNewExpense(exp);
-            //checking to see if the new expense has been added
-            displayAllExpenses(IExpenseDao.getAllExpenses());
+            //Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
+            //IExpenseDao.addNewExpense(exp);
+            //checking to see any changes
+            //displayAllExpenses(IExpenseDao.getAllExpenses());
 
+            //deleting an existing expense
+            IExpenseDao.deleteExistingExpense(6);
+            //checking to see any changes
+            displayAllExpenses(IExpenseDao.getAllExpenses());
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement

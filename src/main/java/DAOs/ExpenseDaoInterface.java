@@ -8,12 +8,12 @@ import Exceptions.DaoException;
 //interface which defines the methods that can be used by the BusinessObjects
 public interface ExpenseDaoInterface {
 
-    public List<Expense> getAllExpenses() throws DaoException;
+    List<Expense> getAllExpenses() throws DaoException;
     //returns a list of Expense objects which refer to all the currently existing expenses on the database
 
-    public void addNewExpense(Expense newExpense) throws DaoException;
-    //provides an Expense type object to add as an "Expense" table's field in the database
+    void addNewExpense(Expense newExpense) throws DaoException;
+    //a field in the database's "Expenses" table is added based on the passed in Expense type object
 
-    public void deleteExistingExpense(int existingExpenseId) throws DaoException;
-
+    void deleteExistingExpense(int existingExpenseId) throws DaoException;
+    //a field from the database's "Expenses" table is deleted based on the passed in expense id
 }

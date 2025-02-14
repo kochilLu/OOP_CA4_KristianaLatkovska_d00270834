@@ -79,7 +79,6 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
         //initiating variables
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
 
         try
         {
@@ -122,6 +121,42 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
     @Override
     public void deleteExistingExpense(int existingExpenseId) throws DaoException
     {
-        //...
+        //initiating variables
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "DELETE FROM expenses WHERE expenseID = ?";
+            preparedStatement = connection.prepareStatement(query);
+
+            //adds an expense's id number to complete it
+            preparedStatement.setInt(1,existingExpenseId);
+
+            //executing the query
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new DaoException("deleteExistingExpenseSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("deleteExistingExpense() " + e.getMessage());
+            }
+        }
     }
 }
