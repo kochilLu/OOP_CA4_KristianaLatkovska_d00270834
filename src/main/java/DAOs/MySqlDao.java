@@ -1,10 +1,10 @@
 package DAOs;
 
+import Exceptions.DaoException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import Exceptions.DaoException;
 
 //class for forming and closing connections to the database
 //used code sample 4 provided on Moodle by Dermot Logue

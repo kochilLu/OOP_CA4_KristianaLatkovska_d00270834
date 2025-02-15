@@ -1,5 +1,9 @@
 package DAOs;
 
+import Exceptions.DaoException;
+import DTOs.Expense;
+import DTOs.Income;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,10 +11,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import Exceptions.DaoException;
-import DTOs.Expense;
-import DTOs.Income;
 
 //Java class which accesses the "Expense" and "Income" tables in the database
 public class MySqlExpenseIncomeDao extends MySqlDao implements ExpenseIncomeDaoInterface{
@@ -58,7 +58,7 @@ public class MySqlExpenseIncomeDao extends MySqlDao implements ExpenseIncomeDaoI
             resultSet = preparedStatement.executeQuery();
 
             //creating Expense type objects by going through the result set of the executed query
-            while (resultSet.next()) {
+            while(resultSet.next()){
 
                 //stores records in variables
                 int expenseId = resultSet.getInt("expenseID");

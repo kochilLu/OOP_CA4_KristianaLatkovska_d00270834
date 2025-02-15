@@ -1,9 +1,9 @@
 package DAOs;
 
-import java.util.List;
-
 import DTOs.Expense;
 import Exceptions.DaoException;
+
+import java.util.List;
 
 //interface which defines the methods that can be used by the BusinessObjects
 public interface ExpenseDaoInterface {
