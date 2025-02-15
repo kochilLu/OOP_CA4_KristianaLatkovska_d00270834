@@ -132,7 +132,7 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDaoInterface{
             String query = "DELETE FROM income WHERE incomeID = ?";
             preparedStatement = connection.prepareStatement(query);
 
-            //adds an expense's id number to complete it
+            //adds an income's id number to complete it
             preparedStatement.setInt(1,existingIncomeId);
 
             //executing the query

@@ -41,7 +41,7 @@ public class MainApp {
             //INCOME
             //viewing all income
             //System.out.println("List of all income: " + IIncomeDao.getAllIncome());
-            displayAllIncome(IIncomeDao.getAllIncome());
+            //displayAllIncome(IIncomeDao.getAllIncome());
 
             //adding a new income
             //Income inc = new Income("bake sale", 34.22, LocalDate.of(2025,1,3));
@@ -50,9 +50,11 @@ public class MainApp {
             //displayAllIncome(IIncomeDao.getAllIncome());
 
             //deleting an existing income
-            IIncomeDao.deleteExistingIncome(3);
+            //IIncomeDao.deleteExistingIncome(3);
             //checking to see any changes
             displayAllIncome(IIncomeDao.getAllIncome());
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //INCOME & EXPENSES
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
@@ -95,4 +97,19 @@ public class MainApp {
         System.out.println("-----------------------------------------------------------------------");
     }
 
+
+    //make method for calculating money spent/earned-----> or myb make 2 methods for this instead of combining it into one!!!
+    // it will take in a list of objects
+    // u will have a variable 'total money made/spent' = 0
+    // first it will be determined what sort of object the list stores
+    // then we will iterate through the list of objects using .getAmountEarned() or .getAmountSpent() based on the list's object type
+    // return the total money made/spent
+
+    //make a method for calculating money left after income and expenses of one certain month
+    // it will take in a list of objects
+    // u will have a variable called total that will be 0.00at first
+    // while iterating through the list, every object's type should be evaluated
+    // if its an income object, then -> total+income.getAmountEarned()
+    // if its an expense object, then -> total-expense.getAmountSpent()
+    //returns the total
 }
