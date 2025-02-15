@@ -141,6 +141,27 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
     }
 
     @Override
+    public List<Integer> getListOfAllExpensesIds() throws DaoException
+    {
+        List<Integer> expenseIdList = new ArrayList<>();
+
+        //...
+
+        return expenseIdList;
+    }
+
+    @Override
+    public Expense getExpenseById(int expenseId) throws DaoException
+    {
+        Expense exp = new Expense();
+
+        //...
+
+        return exp;
+    }
+
+
+    @Override
     public void addNewExpense(Expense newExpense) throws DaoException
     {
         //initiating variables

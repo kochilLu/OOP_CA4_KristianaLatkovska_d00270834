@@ -28,6 +28,16 @@ public class Expense {
         this.date = date;
     }
 
+    //empty constructor
+    public Expense()
+    {
+        this.id = 0;
+        this.title = "";
+        this.category = "";
+        this.amountSpent = 0.0;
+        this.date = null;
+    }
+
     //getters
     public int getId(){return id;}
     public String getTittle(){return title;}

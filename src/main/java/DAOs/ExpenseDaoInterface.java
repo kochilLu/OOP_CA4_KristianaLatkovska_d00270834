@@ -19,4 +19,10 @@ public interface ExpenseDaoInterface {
 
     List<Expense> getListOfExpensesOfCertainMonth(int year, int month) throws DaoException;
     //returns a list of Expense objects that refer to expenses in the database that were incurred at a certain year and month
+
+    List<Integer> getListOfAllExpensesIds() throws DaoException;
+    //returns a list of numbers that refer to id's of expenses on the database
+
+    Expense getExpenseById(int expenseId) throws DaoException;
+    //returns an expense from the database based on its id number
 }

@@ -78,7 +78,7 @@ public class MainApp {
             //      retrieve a list of all expense ids___________________________________________Method unfinished
             //      display the list of expense ids to the user
             //      ask for teh user to pick one id
-            //      display neatly an expense with the chosen id_________________________________Method unfinished
+            //      display neatly an expense with the chosen id_________________________________Methods unfinished
             //      ask for user confirmation to delete the expense (if cancels, nothing happens)
             //      if user agrees, the expense with that id gets deleted from the database______Method Done
             // 4 to List all income earned and calculate total income
@@ -95,7 +95,7 @@ public class MainApp {
             //      retrieve a list of all income ids_____________________________________________Method unfinished
             //      display the list of income ids to the user
             //      ask for teh user to pick one id
-            //      display neatly an income with the chosen id___________________________________Method unfinished
+            //      display neatly an income with the chosen id___________________________________Methods unfinished
             //      ask for user confirmation to delete the income (if cancels, nothing happens)
             //      if user agrees, the income with that id gets deleted from the database________Method Done
             // 7 to List all income and expenses for a particular month and display the total income, expenditure, and how much money they should have left over.
@@ -109,10 +109,10 @@ public class MainApp {
             //      display the money left at that specific time period (income - expenses)
 
             //methods I still need to make:
-            // -> calculate the amount spent on expenses based on a list of Expense type objects
-            // -> calculate the amount earned on income based on a list of Income type objects
             // -> retrieve a list of all expense ids
             // -> retrieve a list of all income ids
+            // -> retrieve an Expense type object based on an id
+            // -> retrieve an Income type object based on an id
             // -> display neatly an expense based on its id number
             // -> display neatly an income based on its id number
 
@@ -158,7 +158,7 @@ public class MainApp {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    // methods for calculating numbers
+    // methods for calculating money
     //------------------------------------------------------------------------------------------------------------------
     //method for calculating income
     public static double getIncomeAmount(List<Income> incomeList)
