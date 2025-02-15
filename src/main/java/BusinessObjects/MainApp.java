@@ -3,10 +3,7 @@ package BusinessObjects;
 import java.time.LocalDate;
 import java.util.List;
 
-import DAOs.ExpenseDaoInterface;
-import DAOs.IncomeDaoInterface;
-import DAOs.MySqlExpenseDao;
-import DAOs.MySqlIncomeDao;
+import DAOs.*;
 import DTOs.Expense;
 import DTOs.Income;
 import Exceptions.DaoException;
@@ -17,6 +14,7 @@ public class MainApp {
 
         ExpenseDaoInterface IExpenseDao = new MySqlExpenseDao();
         IncomeDaoInterface IIncomeDao = new MySqlIncomeDao();
+        ExpenseIncomeDaoInterface IExpenseIncomeDao = new MySqlExpenseIncomeDao();
 
         try
         {
@@ -55,6 +53,9 @@ public class MainApp {
             displayAllIncome(IIncomeDao.getAllIncome());
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //INCOME & EXPENSES
+            //getting a list of expenses at a certain month and year
+            System.out.println("List of expenses on 2025 January: " + IExpenseIncomeDao.getListOfExpensesOfCertainMonth(2025,1));
+
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
