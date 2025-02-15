@@ -97,5 +97,68 @@ public class MySqlExpenseIncomeDao extends MySqlDao implements ExpenseIncomeDaoI
     }
 
     //method for getting a list of Income objects at a certain month
+    public List<Income> getListOfIncomeOfCertainMonth(int year, int month) throws DaoException {
+        //initiating variables
+        List<Income> incomeList = new ArrayList<>(); //return value
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "SELECT * FROM Income WHERE EXTRACT(YEAR FROM dateIncurred) = ? AND EXTRACT(MONTH FROM dateIncurred) = ?";
+            //learned how to get a certain part of the date from https://www.datacamp.com/tutorial/sql-date-greater-than
+            //
+            preparedStatement = connection.prepareStatement(query);
+
+            //adding the passed in month & year as the missing value in the prepared statement
+            preparedStatement.setInt(1, year);
+            preparedStatement.setInt(2, month);
+
+            //executing the query
+            resultSet = preparedStatement.executeQuery();
+
+            //creating Income type objects by going through the result set of the executed query
+            while (resultSet.next()) {
+
+                //stores records in variables
+                int incomeId = resultSet.getInt("incomeID");
+                String incomeTitle = resultSet.getString("title");
+                double incomeAmount = resultSet.getDouble("amount");
+                LocalDate incomeDate = resultSet.getDate("dateIncurred").toLocalDate();
+
+                //creates an Income type object
+                Income inc = new Income(incomeId, incomeTitle, incomeAmount, incomeDate);
+                //adding the Income type object to the list of all expenses
+                incomeList.add(inc);
+            }
+        }
+        catch (SQLException e) {
+            throw new DaoException("getListOfIncomeOfCertainMonthSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (resultSet != null) {
+                    resultSet.close(); //closes the result set
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("getListOfIncomeOfCertainMonth() " + e.getMessage());
+            }
+        }
+
+        return incomeList;
+    }
 }

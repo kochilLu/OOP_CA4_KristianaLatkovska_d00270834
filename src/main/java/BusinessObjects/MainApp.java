@@ -53,8 +53,8 @@ public class MainApp {
             displayAllIncome(IIncomeDao.getAllIncome());
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //INCOME & EXPENSES
-            //getting a list of expenses at a certain month and year
-            System.out.println("List of expenses on 2025 January: " + IExpenseIncomeDao.getListOfExpensesOfCertainMonth(2025,1));
+            //getting a list of income at a certain month and year
+            System.out.println("List of income on 2025 January: " + IExpenseIncomeDao.getListOfIncomeOfCertainMonth(2025,1));
 
 
         }
