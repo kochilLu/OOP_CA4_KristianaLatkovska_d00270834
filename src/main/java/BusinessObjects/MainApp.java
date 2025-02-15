@@ -22,7 +22,9 @@ public class MainApp {
             //EXPENSES
             //viewing all expenses
             //System.out.println("List of all expenses: " + IExpenseDao.getAllExpenses());
-            //displayAllExpenses(IExpenseDao.getAllExpenses());
+            displayAllExpenses(IExpenseDao.getAllExpenses());
+            //displaying the total money spent on all expenses
+            System.out.println("Total money spent on all expenses: " + getExpensesAmount(IExpenseDao.getAllExpenses()));
 
             //adding a new expense
             //Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
@@ -38,7 +40,9 @@ public class MainApp {
             //INCOME
             //viewing all income
             //System.out.println("List of all income: " + IIncomeDao.getAllIncome());
-            //displayAllIncome(IIncomeDao.getAllIncome());
+            displayAllIncome(IIncomeDao.getAllIncome());
+            //displaying the total money earned from all the income
+            System.out.println("Total money earned: " + getIncomeAmount(IIncomeDao.getAllIncome()));
 
             //adding a new income
             //Income inc = new Income("bake sale", 34.22, LocalDate.of(2025,1,3));
@@ -53,10 +57,10 @@ public class MainApp {
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //INCOME & EXPENSES
             //retrieving a list of Income objects that refer to income in the database at a certain incurred year and month
-            System.out.println("List of Income objects incurred at January of 2025: " + IIncomeDao.getListOfIncomeOfCertainMonth(2025,1));
+            //System.out.println("List of Income objects incurred at January of 2025: " + IIncomeDao.getListOfIncomeOfCertainMonth(2025,1));
 
             //retrieving a list of Expense objects that refer to expenses in the database at a certain incurred year and month
-            System.out.println("List of Expense objects incurred at January of 2025: " + IExpenseDao.getListOfExpensesOfCertainMonth(2025,1));
+            //System.out.println("List of Expense objects incurred at January of 2025: " + IExpenseDao.getListOfExpensesOfCertainMonth(2025,1));
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //planing the application's functionality adn what methods i still need to develop to start building hte app
@@ -102,7 +106,7 @@ public class MainApp {
             //      calculate the income earned___________________________________________________Method unfinished
             //      calculate the expenses spent__________________________________________________Method unfinished
             //      display the mount earned and spent during that specific time period
-            //      calculate the money left at that specific time period (income - expenses)_____Method unfinished
+            //      display the money left at that specific time period (income - expenses)
 
             //methods I still need to make:
             // -> calculate the amount spent on expenses based on a list of Expense type objects
@@ -111,7 +115,6 @@ public class MainApp {
             // -> retrieve a list of all income ids
             // -> display neatly an expense based on its id number
             // -> display neatly an income based on its id number
-            // -> subtract income from expense
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
@@ -157,20 +160,31 @@ public class MainApp {
     //------------------------------------------------------------------------------------------------------------------
     // methods for calculating numbers
     //------------------------------------------------------------------------------------------------------------------
+    //method for calculating income
+    public static double getIncomeAmount(List<Income> incomeList)
+    {
+        double totalAmountEarned = 0.0; //initiates the return value
 
+        //calculates the total income
+        for(Income inc : incomeList)
+        {
+            totalAmountEarned += inc.getAmountEarned();
+        }
 
-    //make method for calculating money spent/earned-----> or myb make 2 methods for this instead of combining it into one!!!
-    // it will take in a list of objects
-    // u will have a variable 'total money made/spent' = 0
-    // first it will be determined what sort of object the list stores
-    // then we will iterate through the list of objects using .getAmountEarned() or .getAmountSpent() based on the list's object type
-    // return the total money made/spent
+        return totalAmountEarned;
+    }
 
-    //make a method for calculating money left after income and expenses of one certain month
-    // it will take in a list of objects
-    // u will have a variable called total that will be 0.00at first
-    // while iterating through the list, every object's type should be evaluated
-    // if its an income object, then -> total+income.getAmountEarned()
-    // if its an expense object, then -> total-expense.getAmountSpent()
-    //returns the total
+    //method for calculating expenses
+    public static double getExpensesAmount(List<Expense> expenseList)
+    {
+        double totalAmountSpent = 0.0; //initializes the return value
+
+        //calculate the total amount spent
+        for(Expense exp : expenseList)
+        {
+            totalAmountSpent += exp.getAmountSpent();
+        }
+
+        return totalAmountSpent;
+    }
 }
