@@ -215,7 +215,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
             //executing the query
             resultSet = preparedStatement.executeQuery();
 
-            //storing expense ids by going through the result set of the executed query
+            //adding on to an Expense object by going through the result set of the executed query
             while (resultSet.next()) {
 
                 //stores records in variables

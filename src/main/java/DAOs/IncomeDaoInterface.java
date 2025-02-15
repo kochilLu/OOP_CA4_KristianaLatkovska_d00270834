@@ -19,4 +19,10 @@ public interface IncomeDaoInterface {
 
     List<Income> getListOfIncomeOfCertainMonth(int year, int month) throws DaoException;
     //returns a list of Income objects that refer to income in the database that were incurred at a certain year and month
+
+    List<Integer> getListOfAllIncomeIds() throws DaoException;
+    //returns a list of numbers that refer to id's of income on the database
+
+    Income getIncomeById(int incomeId) throws DaoException;
+    //returns an income from the database based on its id number
 }

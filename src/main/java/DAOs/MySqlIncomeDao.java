@@ -1,5 +1,6 @@
 package DAOs;
 
+import DTOs.Expense;
 import DTOs.Income;
 import Exceptions.DaoException;
 
@@ -136,6 +137,120 @@ public class MySqlIncomeDao extends MySqlDao implements IncomeDaoInterface{
         }
 
         return incomeList;
+    }
+
+    @Override
+    public List<Integer> getListOfAllIncomeIds() throws DaoException
+    {
+        //initiating variables
+        List<Integer> incomeIdList = new ArrayList<>(); //return value
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "SELECT incomeID FROM Income";
+            preparedStatement = connection.prepareStatement(query);
+
+            //executing the query
+            resultSet = preparedStatement.executeQuery();
+
+            //storing income ids by going through the result set of the executed query
+            while (resultSet.next()) {
+                incomeIdList.add(resultSet.getInt("incomeID"));
+            }
+        }
+        catch (SQLException e) {
+            throw new DaoException("getListOfAllIncomeIdsSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (resultSet != null) {
+                    resultSet.close(); //closes the result set
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("getListOfAllIncomeIds() " + e.getMessage());
+            }
+        }
+
+        return incomeIdList;
+    }
+
+    @Override
+    public Income getIncomeById(int incomeId) throws DaoException
+    {
+        //initiating variables
+        Income inc = new Income(incomeId); //return value
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "SELECT title, amount, dateIncurred FROM Income WHERE incomeID = ?";
+            preparedStatement = connection.prepareStatement(query);
+
+            //adding an income id to the prepared query to finish it
+            preparedStatement.setInt(1, incomeId);
+
+            //executing the query
+            resultSet = preparedStatement.executeQuery();
+
+            //adding on to an Income object by going through the result set of the executed query
+            while (resultSet.next()) {
+
+                //stores records in variables
+                String incomeTitle = resultSet.getString("title");
+                double incomeAmount = resultSet.getDouble("amount");
+                LocalDate incomeDate = resultSet.getDate("dateIncurred").toLocalDate();
+
+                //sets the stored values to the previously declared return value
+                inc.setTitle(incomeTitle);
+                inc.setAmountEarned(incomeAmount);
+                inc.setDate(incomeDate);
+            }
+        }
+        catch (SQLException e) {
+            throw new DaoException("getIncomeByIdSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (resultSet != null) {
+                    resultSet.close(); //closes the result set
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("getIncomeById() " + e.getMessage());
+            }
+        }
+
+        return inc;
     }
 
     @Override

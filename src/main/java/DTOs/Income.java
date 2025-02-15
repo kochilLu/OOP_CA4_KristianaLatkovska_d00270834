@@ -25,6 +25,15 @@ public class Income {
         this.date = date;
     }
 
+    //partial constructor
+    public Income(int id)
+    {
+        this.id = id;
+        this.title = "";
+        this.amountEarned = 0.0;
+        this.date = null;
+    }
+
     //getters
     public int getId(){return id;}
     public String getTitle(){return title;}
