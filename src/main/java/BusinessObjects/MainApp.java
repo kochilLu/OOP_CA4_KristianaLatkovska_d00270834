@@ -29,6 +29,10 @@ public class MainApp {
             //viewing all expense ids
             System.out.println("IDs of existing expenses on the database: " + IExpenseDao.getListOfAllExpenseIds());
 
+            //viewing a certain expense based on its id
+            System.out.println("Expense with the id 1: " + IExpenseDao.getExpenseById(1));
+            displayOneExpense(IExpenseDao.getExpenseById(1));
+
             //adding a new expense
             //Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
             //IExpenseDao.addNewExpense(exp);
@@ -112,7 +116,6 @@ public class MainApp {
             //      display the money left at that specific time period (income - expenses)
 
             //methods I still need to make:
-            // -> retrieve a list of all expense ids
             // -> retrieve a list of all income ids
             // -> retrieve an Expense type object based on an id
             // -> retrieve an Income type object based on an id
@@ -138,7 +141,7 @@ public class MainApp {
 
         for(Expense exp : expenseList) //goes through the list of Expense type objects
         {
-            System.out.printf("%d\t%-20s\t%-15s\t%-12.2f\t%s\n", exp.getId(), exp.getTittle(), exp.getCategory(), exp.getAmountSpent(), exp.getDate());
+            System.out.printf("%d\t%-20s\t%-15s\t%-12.2f\t%s\n", exp.getId(), exp.getTitle(), exp.getCategory(), exp.getAmountSpent(), exp.getDate());
         }
 
         System.out.println("-----------------------------------------------------------------------");
@@ -158,6 +161,15 @@ public class MainApp {
         }
 
         System.out.println("-----------------------------------------------------------------------");
+    }
+
+    //method for neatly displaying one expense
+    public static void displayOneExpense(Expense expense)
+    {
+        System.out.println("\nEXPENSE with the ID " + expense.getId() + ":");
+        System.out.println("-----------------------------------------");
+        System.out.printf("Title: %s\nCategory: %s\nAmount Spent: %.2f euro\nDate: %s\n", expense.getTitle(), expense.getCategory(), expense.getAmountSpent(), expense.getDate());
+        System.out.println("-----------------------------------------");
     }
 
     //------------------------------------------------------------------------------------------------------------------

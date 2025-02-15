@@ -28,10 +28,10 @@ public class Expense {
         this.date = date;
     }
 
-    //empty constructor
-    public Expense()
+    //partial constructor
+    public Expense(int id)
     {
-        this.id = 0;
+        this.id = id;
         this.title = "";
         this.category = "";
         this.amountSpent = 0.0;
@@ -40,14 +40,14 @@ public class Expense {
 
     //getters
     public int getId(){return id;}
-    public String getTittle(){return title;}
+    public String getTitle(){return title;}
     public String getCategory(){return category;}
     public double getAmountSpent(){return amountSpent;}
     public LocalDate getDate(){return date;}
 
     //setters
     public void setId(int id){this.id = id;}
-    public void setTittle(String title){this.title = title;}
+    public void setTitle(String title){this.title = title;}
     public void setCategory(String category){this.category = category;}
     public void setAmountSpent(double amountSpent){this.amountSpent = amountSpent;}
     public void setDate(LocalDate date){this.date = date;}

@@ -194,9 +194,64 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
     @Override
     public Expense getExpenseById(int expenseId) throws DaoException
     {
-        Expense exp = new Expense();
+        //initiating variables
+        Expense exp = new Expense(expenseId); //return value
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        //...
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "SELECT title, category, amount, dateIncurred FROM Expenses WHERE expenseID = ?";
+            preparedStatement = connection.prepareStatement(query);
+
+            //adding an expense id to the prepared query to finish it
+            preparedStatement.setInt(1, expenseId);
+
+            //executing the query
+            resultSet = preparedStatement.executeQuery();
+
+            //storing expense ids by going through the result set of the executed query
+            while (resultSet.next()) {
+
+                //stores records in variables
+                String expenseTitle = resultSet.getString("title");
+                String expenseCategory = resultSet.getString("category");
+                double expenseAmount = resultSet.getDouble("amount");
+                LocalDate expenseDate = resultSet.getDate("dateIncurred").toLocalDate();
+
+                //sets the stored values to the previously declared return value
+                exp.setTitle(expenseTitle);
+                exp.setCategory(expenseCategory);
+                exp.setAmountSpent(expenseAmount);
+                exp.setDate(expenseDate);
+            }
+        }
+        catch (SQLException e) {
+            throw new DaoException("getExpenseByIdSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (resultSet != null) {
+                    resultSet.close(); //closes the result set
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("getExpenseById() " + e.getMessage());
+            }
+        }
 
         return exp;
     }
@@ -219,7 +274,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
             preparedStatement = connection.prepareStatement(query);
 
             //adding values to the query to complete it
-            preparedStatement.setString(1,newExpense.getTittle()); //adds the expense's title
+            preparedStatement.setString(1,newExpense.getTitle()); //adds the expense's title
             preparedStatement.setString(2,newExpense.getCategory()); //adds the expense's category
             preparedStatement.setDouble(3,newExpense.getAmountSpent()); //adds the expense's money amount
             preparedStatement.setDate(4, Date.valueOf(newExpense.getDate())); //adds the expense's date of occurrence
