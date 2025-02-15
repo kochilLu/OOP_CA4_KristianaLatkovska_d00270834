@@ -21,8 +21,10 @@ public class MySqlExpenseIncomeDao extends MySqlDao implements ExpenseIncomeDaoI
         //initializing the return value
         List<Object> listOfIncomeAndExpenses = new ArrayList<Object>();
 
-        //TODO
-        // add to the list expense and income objects
+        //adding Expense objects of expenses that were incurred at the passed in parameter year and month
+        listOfIncomeAndExpenses.addAll(getListOfExpensesOfCertainMonth(year, month));
+        //adding Income objects of income that was incurred at the passed in parameter year and month
+        listOfIncomeAndExpenses.addAll(getListOfIncomeOfCertainMonth(year, month));
 
         return listOfIncomeAndExpenses;
     }
