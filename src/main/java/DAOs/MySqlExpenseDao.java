@@ -84,7 +84,7 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
         try
         {
             //connects to the database
-            connection = this.getConnection(); // the ".getConnection()" method is inherited from the "MySqlDao" Java class
+            connection = this.getConnection();
 
             //preparing the SQL query
             String query = "SELECT * FROM Expenses WHERE EXTRACT(YEAR FROM dateIncurred) = ? AND EXTRACT(MONTH FROM dateIncurred) = ?";
@@ -141,11 +141,52 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
     }
 
     @Override
-    public List<Integer> getListOfAllExpensesIds() throws DaoException
+    public List<Integer> getListOfAllExpenseIds() throws DaoException
     {
-        List<Integer> expenseIdList = new ArrayList<>();
+        //initiating variables
+        List<Integer> expenseIdList = new ArrayList<>(); //return value
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        //...
+        try
+        {
+            //connects to the database
+            connection = this.getConnection();
+
+            //preparing the SQL query
+            String query = "SELECT expenseID FROM Expenses";
+            preparedStatement = connection.prepareStatement(query);
+
+            //executing the query
+            resultSet = preparedStatement.executeQuery();
+
+            //storing expense ids by going through the result set of the executed query
+            while (resultSet.next()) {
+                expenseIdList.add(resultSet.getInt("expenseID"));
+            }
+        }
+        catch (SQLException e) {
+            throw new DaoException("getListOfAllExpenseIdsSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (resultSet != null) {
+                    resultSet.close(); //closes the result set
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("getListOfAllExpenseIds() " + e.getMessage());
+            }
+        }
 
         return expenseIdList;
     }

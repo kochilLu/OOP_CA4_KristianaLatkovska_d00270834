@@ -24,7 +24,10 @@ public class MainApp {
             //System.out.println("List of all expenses: " + IExpenseDao.getAllExpenses());
             displayAllExpenses(IExpenseDao.getAllExpenses());
             //displaying the total money spent on all expenses
-            System.out.println("Total money spent on all expenses: " + getExpensesAmount(IExpenseDao.getAllExpenses()));
+            //System.out.println("Total money spent on all expenses: " + getExpensesAmount(IExpenseDao.getAllExpenses()));
+
+            //viewing all expense ids
+            System.out.println("IDs of existing expenses on the database: " + IExpenseDao.getListOfAllExpenseIds());
 
             //adding a new expense
             //Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
@@ -40,9 +43,9 @@ public class MainApp {
             //INCOME
             //viewing all income
             //System.out.println("List of all income: " + IIncomeDao.getAllIncome());
-            displayAllIncome(IIncomeDao.getAllIncome());
+            //displayAllIncome(IIncomeDao.getAllIncome());
             //displaying the total money earned from all the income
-            System.out.println("Total money earned: " + getIncomeAmount(IIncomeDao.getAllIncome()));
+            //System.out.println("Total money earned: " + getIncomeAmount(IIncomeDao.getAllIncome()));
 
             //adding a new income
             //Income inc = new Income("bake sale", 34.22, LocalDate.of(2025,1,3));
