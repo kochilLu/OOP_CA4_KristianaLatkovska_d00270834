@@ -2,6 +2,7 @@ package BusinessObjects;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Scanner;
 
 import DAOs.*;
 import DTOs.Expense;
@@ -12,120 +13,94 @@ public class MainApp {
 
     public static void main(String[] args) {
 
+        Scanner keyboard = new Scanner(System.in); //for user input
+
         ExpenseDaoInterface IExpenseDao = new MySqlExpenseDao();
         IncomeDaoInterface IIncomeDao = new MySqlIncomeDao();
 
+        boolean appIsRunning = true; //for running the app
+
         try
         {
-            //assuming that all teh passed in parameters are valid values, tests:
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //EXPENSES
-            //viewing all expenses
-            //System.out.println("List of all expenses: " + IExpenseDao.getAllExpenses());
-            //displayAllExpenses(IExpenseDao.getAllExpenses());
-            //displaying the total money spent on all expenses
-            //System.out.println("Total money spent on all expenses: " + getExpensesAmount(IExpenseDao.getAllExpenses()));
+            displayAllIncome(IIncomeDao.getAllIncome()); //temporarily here, so I do not get an error for not having anything ot throw an SQL exception for
 
-            //viewing all expense ids
-            //System.out.println("IDs of existing expenses on the database: " + IExpenseDao.getListOfAllExpenseIds());
+            do
+            {
+                //prompting and storing user input
+                System.out.println("""
+                        Press
+                        1 to view all expenses
+                        2 to add a new expense
+                        3 to delete an existing expense
+                        4 to view all income
+                        5 to add a new income
+                        6 to delete an existing income
+                        7 to view income and expenses of one certain year's month
+                        0 to close this application
+                        """);
+                int userInput = keyboard.nextInt();
 
-            //viewing a certain expense based on its id
-            //System.out.println("Expense with the id 1: " + IExpenseDao.getExpenseById(1));
-            //displayOneExpense(IExpenseDao.getExpenseById(1));
-
-            //adding a new expense
-            //Expense exp = new Expense("Chocolate", "Gift", 11.28, LocalDate.of(2025,2,12)); //learned about LocalDate here: https://www.baeldung.com/java-creating-localdate-with-values
-            //IExpenseDao.addNewExpense(exp);
-            //checking to see any changes
-            //displayAllExpenses(IExpenseDao.getAllExpenses());
-
-            //deleting an existing expense
-            //IExpenseDao.deleteExistingExpense(6);
-            //checking to see any changes
-            //displayAllExpenses(IExpenseDao.getAllExpenses());
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //INCOME
-            //viewing all income
-            //System.out.println("List of all income: " + IIncomeDao.getAllIncome());
-            //displayAllIncome(IIncomeDao.getAllIncome());
-            //displaying the total money earned from all the income
-            //System.out.println("Total money earned: " + getIncomeAmount(IIncomeDao.getAllIncome()));
-
-            //adding a new income
-            //Income inc = new Income("bake sale", 34.22, LocalDate.of(2025,1,3));
-            //IIncomeDao.addNewIncome(inc);
-            //checking to see any changes
-            displayAllIncome(IIncomeDao.getAllIncome());
-
-            //viewing all income ids
-            System.out.println("IDs of existing income on the database: " + IIncomeDao.getListOfAllIncomeIds());
-
-            //viewing a certain income based on its id
-            System.out.println("Income with the id 1: " + IIncomeDao.getIncomeById(1));
-            displayOneIncome(IIncomeDao.getIncomeById(1));
-
-            //deleting an existing income
-            //IIncomeDao.deleteExistingIncome(3);
-            //checking to see any changes
-            //displayAllIncome(IIncomeDao.getAllIncome());
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //INCOME & EXPENSES
-            //retrieving a list of Income objects that refer to income in the database at a certain incurred year and month
-            //System.out.println("List of Income objects incurred at January of 2025: " + IIncomeDao.getListOfIncomeOfCertainMonth(2025,1));
-
-            //retrieving a list of Expense objects that refer to expenses in the database at a certain incurred year and month
-            //System.out.println("List of Expense objects incurred at January of 2025: " + IExpenseDao.getListOfExpensesOfCertainMonth(2025,1));
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //planing the application's functionality adn what methods i still need to develop to start building hte app
-            // 1 to List all expenses incurred and calculate the total spend
-            //      retrieve a list of all expenses _____________________________________________Method Done
-            //      display the list of expenses neatly__________________________________________Method Done
-            //      calculate the amount spent on all expenses in total__________________________Method Done
-            //      display the calculation
-            // 2 to Add a new expense
-            //      take user input for creating a new expense and store it in multiple variables
-            //      verify if the user input is valid (if not, ask for user input again)
-            //      once the user input is valid, save create and expense object
-            //      add the expense type object to the database__________________________________Method Done
-            // 3 to Delete an expense
-            //      retrieve a list of all expense ids___________________________________________Method Done
-            //      display the list of expense ids to the user
-            //      ask for teh user to pick one id
-            //      display neatly an expense with the chosen id_________________________________Methods Done
-            //      ask for user confirmation to delete the expense (if cancels, nothing happens)
-            //      if user agrees, the expense with that id gets deleted from the database______Method Done
-            // 4 to List all income earned and calculate total income
-            //      retrieve a list of all income________________________________________________Method Done
-            //      display the list of income neatly____________________________________________Method Done
-            //      calculate the amount earned from all income in total_________________________Method Done
-            //      display the calculation
-            // 5 to Add a new income
-            //      take user input for creating a new income and store it in multiple variables
-            //      verify if the user input is valid (if not, ask for user input again)
-            //      once the user input is valid, save create and income object
-            //      add the income type object to the database____________________________________Method Done
-            // 6 to Delete an income
-            //      retrieve a list of all income ids_____________________________________________Method unfinished
-            //      display the list of income ids to the user
-            //      ask for teh user to pick one id
-            //      display neatly an income with the chosen id___________________________________Methods unfinished
-            //      ask for user confirmation to delete the income (if cancels, nothing happens)
-            //      if user agrees, the income with that id gets deleted from the database________Method Done
-            // 7 to List all income and expenses for a particular month and display the total income, expenditure, and how much money they should have left over.
-            //      retrieve a list of income at a certain month at a certain year________________Method Done
-            //      retrieve a list of expenses at a certain month at a certain year______________Method Done
-            //      neatly display the income list________________________________________________Method Done
-            //      neatly display the expense list_______________________________________________Method Done
-            //      calculate the income earned___________________________________________________Method Done
-            //      calculate the expenses spent__________________________________________________Method Done
-            //      display the mount earned and spent during that specific time period
-            //      display the money left at that specific time period (income - expenses)
-
-            //methods I still need to make:
-            // -> retrieve a list of all income ids
-            // -> retrieve an Income type object based on an id
-            // -> display neatly an income based on its id number
+                switch(userInput)
+                {
+                    case 0:
+                        appIsRunning = false; //closes the application
+                        break;
+                    case 1:
+                        // retrieve a list of all expenses
+                        // display the list of expenses neatly
+                        // calculate the amount spent on all expenses in total
+                        // display the calculation
+                        break;
+                    case 2:
+                        // take user input for creating a new expense and store it in multiple variables
+                        // verify if the user input is valid (if not, ask for user input again)
+                        // once the user input is valid, create and expense object
+                        // add the expense type object to the database
+                        break;
+                    case 3:
+                        // retrieve a list of all expense ids
+                        // display the list of expense ids to the user
+                        // ask for the user to pick one id
+                        // check if the user's id is valid (if not, ask them to enter a valid one)
+                        // retrieve an Expense object with that chosen id
+                        // display that expense object neatly
+                        // ask for user confirmation to delete the expense (if cancels, nothing happens)
+                        // if user agrees, the expense with that id gets deleted from the database
+                        break;
+                    case 4:
+                        // retrieve a list of all income
+                        // display the list of income neatly
+                        // calculate the amount earned from all income in total
+                        // display the calculation
+                        break;
+                    case 5:
+                        // take user input for creating a new income and store it in multiple variables
+                        // verify if the user input is valid (if not, ask for user input again)
+                        // once the user input is valid, save create and income object
+                        // add the income type object to the database
+                        break;
+                    case 6:
+                        // retrieve a list of all income ids
+                        // display the list of income ids to the user
+                        // ask for the user to pick one id
+                        // check if the user's id is valid (if not, ask them to enter a valid one)
+                        // retrieve an income object based on the user's given id
+                        // display neatly the retrieved income
+                        // ask for user confirmation to delete the income (if cancels, nothing happens)
+                        // if user agrees, the income with that id gets deleted from the database
+                        break;
+                    case 7:
+                        // retrieve a list of income at a certain month at a certain year
+                        // retrieve a list of expenses at a certain month at a certain year
+                        // neatly display the income list
+                        // neatly display the expense list
+                        // calculate the income earned
+                        // calculate the expenses spent
+                        // display the mount earned and spent during that specific time period
+                        // display the money left at that specific time period (income - expenses)
+                        break;
+                }
+            }while(appIsRunning);
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
@@ -136,7 +111,6 @@ public class MainApp {
     //------------------------------------------------------------------------------------------------------------------
     // methods for displaying information neatly
     //------------------------------------------------------------------------------------------------------------------
-    //method for neatly displaying a list of Expense objects
     public static void displayAllExpenses(List<Expense> expenseList)
     {
         System.out.println("\nEXPENSES:");
@@ -152,7 +126,6 @@ public class MainApp {
         System.out.println("-----------------------------------------------------------------------");
     }
 
-    //method for neatly displaying a list of Income objects
     public static void displayAllIncome(List<Income> incomeList)
     {
         System.out.println("\nINCOME:");
@@ -168,7 +141,6 @@ public class MainApp {
         System.out.println("-----------------------------------------------------------------------");
     }
 
-    //method for neatly displaying one expense
     public static void displayOneExpense(Expense expense)
     {
         System.out.println("\nEXPENSE with the ID " + expense.getId() + ":");
@@ -177,7 +149,6 @@ public class MainApp {
         System.out.println("-----------------------------------------");
     }
 
-    //method for neatly displaying one income
     public static void displayOneIncome(Income income)
     {
         System.out.println("\nINCOME with the ID " + income.getId() + ":");
