@@ -16,4 +16,7 @@ public interface IncomeDaoInterface {
 
     void deleteExistingIncome(int existingIncomeId) throws DaoException;
     //a field from the database's "Income" table is deleted based on the passed in income id
+
+    List<Income> getListOfIncomeOfCertainMonth(int year, int month) throws DaoException;
+    //returns a list of Income objects that refer to income in the database that were incurred at a certain year and month
 }

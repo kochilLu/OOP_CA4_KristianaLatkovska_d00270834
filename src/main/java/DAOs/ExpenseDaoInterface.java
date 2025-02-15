@@ -16,4 +16,7 @@ public interface ExpenseDaoInterface {
 
     void deleteExistingExpense(int existingExpenseId) throws DaoException;
     //a field from the database's "Expenses" table is deleted based on the passed in expense id
+
+    List<Expense> getListOfExpensesOfCertainMonth(int year, int month) throws DaoException;
+    //returns a list of Expense objects that refer to expenses in the database that were incurred at a certain year and month
 }

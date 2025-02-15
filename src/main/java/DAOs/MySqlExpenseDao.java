@@ -74,6 +74,73 @@ public class MySqlExpenseDao extends MySqlDao implements ExpenseDaoInterface{
     }
 
     @Override
+    public List<Expense> getListOfExpensesOfCertainMonth(int year, int month) throws DaoException {
+        //initiating variables
+        List<Expense> expensesList = new ArrayList<>(); //return value
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try
+        {
+            //connects to the database
+            connection = this.getConnection(); // the ".getConnection()" method is inherited from the "MySqlDao" Java class
+
+            //preparing the SQL query
+            String query = "SELECT * FROM Expenses WHERE EXTRACT(YEAR FROM dateIncurred) = ? AND EXTRACT(MONTH FROM dateIncurred) = ?";
+            //learned how to get a certain part of the date from https://www.datacamp.com/tutorial/sql-date-greater-than
+            //
+            preparedStatement = connection.prepareStatement(query);
+
+            //adding the passed in month & year as the missing value in the prepared statement
+            preparedStatement.setInt(1, year);
+            preparedStatement.setInt(2, month);
+
+            //executing the query
+            resultSet = preparedStatement.executeQuery();
+
+            //creating Expense type objects by going through the result set of the executed query
+            while(resultSet.next()){
+
+                //stores records in variables
+                int expenseId = resultSet.getInt("expenseID");
+                String expenseTitle = resultSet.getString("title");
+                String expenseCategory = resultSet.getString("category");
+                double expenseAmount = resultSet.getDouble("amount");
+                LocalDate expenseDate = resultSet.getDate("dateIncurred").toLocalDate();
+
+                //creates an Expense type object
+                Expense exp = new Expense(expenseId, expenseTitle, expenseCategory, expenseAmount, expenseDate);
+                //adding hte expense type object to the list of all expenses
+                expensesList.add(exp);
+            }
+        }
+        catch (SQLException e) {
+            throw new DaoException("getListOfExpensesOfCertainMonthSet() " + e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if (resultSet != null) {
+                    resultSet.close(); //closes the result set
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close(); //closes the prepared query statement
+                }
+                if (connection != null) {
+                    this.closeConnection(connection); //closes the connection to the database
+                }
+            }
+            catch (SQLException e) {
+                throw new DaoException("getListOfExpensesOfCertainMonth() " + e.getMessage());
+            }
+        }
+
+        return expensesList;
+    }
+
+    @Override
     public void addNewExpense(Expense newExpense) throws DaoException
     {
         //initiating variables

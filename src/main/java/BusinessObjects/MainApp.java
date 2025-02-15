@@ -14,7 +14,6 @@ public class MainApp {
 
         ExpenseDaoInterface IExpenseDao = new MySqlExpenseDao();
         IncomeDaoInterface IIncomeDao = new MySqlIncomeDao();
-        ExpenseIncomeDaoInterface IExpenseIncomeDao = new MySqlExpenseIncomeDao();
 
         try
         {
@@ -50,13 +49,69 @@ public class MainApp {
             //deleting an existing income
             //IIncomeDao.deleteExistingIncome(3);
             //checking to see any changes
-            displayAllIncome(IIncomeDao.getAllIncome());
+            //displayAllIncome(IIncomeDao.getAllIncome());
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //INCOME & EXPENSES
-            //retrieving a list of Income and Expense objects that refer to income and expenses in the database at a certain incurred year and month
-            System.out.println("List of Income and Expense objects: " + IExpenseIncomeDao.getAllExpensesAndIncomeOfCertainMonth(2025,1));
+            //retrieving a list of Income objects that refer to income in the database at a certain incurred year and month
+            System.out.println("List of Income objects incurred at January of 2025: " + IIncomeDao.getListOfIncomeOfCertainMonth(2025,1));
 
+            //retrieving a list of Expense objects that refer to expenses in the database at a certain incurred year and month
+            System.out.println("List of Expense objects incurred at January of 2025: " + IExpenseDao.getListOfExpensesOfCertainMonth(2025,1));
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            //planing the application's functionality adn what methods i still need to develop to start building hte app
+            // 1 to List all expenses incurred and calculate the total spend
+            //      retrieve a list of all expenses _____________________________________________Method Done
+            //      display the list of expenses neatly__________________________________________Method Done
+            //      calculate the amount spent on all expenses in total__________________________Method unfinished
+            //      display the calculation
+            // 2 to Add a new expense
+            //      take user input for creating a new expense and store it in multiple variables
+            //      verify if the user input is valid (if not, ask for user input again)
+            //      once the user input is valid, save create and expense object
+            //      add the expense type object to the database__________________________________Method Done
+            // 3 to Delete an expense
+            //      retrieve a list of all expense ids___________________________________________Method unfinished
+            //      display the list of expense ids to the user
+            //      ask for teh user to pick one id
+            //      display neatly an expense with the chosen id_________________________________Method unfinished
+            //      ask for user confirmation to delete the expense (if cancels, nothing happens)
+            //      if user agrees, the expense with that id gets deleted from the database______Method Done
+            // 4 to List all income earned and calculate total income
+            //      retrieve a list of all income________________________________________________Method Done
+            //      display the list of income neatly____________________________________________Method Done
+            //      calculate the amount earned from all income in total_________________________Method unfinished
+            //      display the calculation
+            // 5 to Add a new income
+            //      take user input for creating a new income and store it in multiple variables
+            //      verify if the user input is valid (if not, ask for user input again)
+            //      once the user input is valid, save create and income object
+            //      add the income type object to the database____________________________________Method Done
+            // 6 to Delete an income
+            //      retrieve a list of all income ids_____________________________________________Method unfinished
+            //      display the list of income ids to the user
+            //      ask for teh user to pick one id
+            //      display neatly an income with the chosen id___________________________________Method unfinished
+            //      ask for user confirmation to delete the income (if cancels, nothing happens)
+            //      if user agrees, the income with that id gets deleted from the database________Method Done
+            // 7 to List all income and expenses for a particular month and display the total income, expenditure, and how much money they should have left over.
+            //      retrieve a list of income at a certain month at a certain year________________Method Done
+            //      retrieve a list of expenses at a certain month at a certain year______________Method Done
+            //      neatly display the income list________________________________________________Method Done
+            //      neatly display the expense list_______________________________________________Method Done
+            //      calculate the income earned___________________________________________________Method unfinished
+            //      calculate the expenses spent__________________________________________________Method unfinished
+            //      display the mount earned and spent during that specific time period
+            //      calculate the money left at that specific time period (income - expenses)_____Method unfinished
+
+            //methods I still need to make:
+            // -> calculate the amount spent on expenses based on a list of Expense type objects
+            // -> calculate the amount earned on income based on a list of Income type objects
+            // -> retrieve a list of all expense ids
+            // -> retrieve a list of all income ids
+            // -> display neatly an expense based on its id number
+            // -> display neatly an income based on its id number
+            // -> subtract income from expense
 
         }
         catch( DaoException e ) { //displays an error if something goes wrong while executing the 'try' statement
@@ -98,6 +153,10 @@ public class MainApp {
 
         System.out.println("-----------------------------------------------------------------------");
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // methods for calculating numbers
+    //------------------------------------------------------------------------------------------------------------------
 
 
     //make method for calculating money spent/earned-----> or myb make 2 methods for this instead of combining it into one!!!
