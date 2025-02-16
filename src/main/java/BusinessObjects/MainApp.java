@@ -1,15 +1,15 @@
 package BusinessObjects;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 import DAOs.*;
 import DTOs.Expense;
 import DTOs.Income;
 import DTOs.YearMonth;
 import Exceptions.DaoException;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class MainApp {
 
@@ -132,7 +132,7 @@ public class MainApp {
             {
                 List<YearMonth> listOfYearMonthCombination = getListOfDistinctYearMonthConsideringBothIncomeAndExpenses(expenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("expenses"),expenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("income"));
 
-                //display the distinct years and month combinations the database has entries for (no matter if its an income or expense)
+                //display the distinct years and month combinations the database has entries for (no matter if it's an income or expense)
                 System.out.println("List of all distinct month and year combinations of entries of Income and expenses: " +  listOfYearMonthCombination);
                 //prompts and stores user input
                 System.out.println("Enter a year of which you would like to view the income & expenses summary for: ");
@@ -331,38 +331,8 @@ public class MainApp {
             }
         }
 
-        //initiating values
-        boolean validDateGiven = false;
-        int year, month, day;
-        LocalDate date = null;
-
-        while(!validDateGiven)
-        {
-            //prompts and stores user input
-            System.out.println("\nEnter the year of when this expense commenced:");
-            year = keyboard.nextInt();
-            System.out.println("Enter the month of when this expense commenced:");
-            month = keyboard.nextInt();
-            System.out.println("Enter the day of when this expense commenced:");
-            day = keyboard.nextInt();
-
-            //validates user input ----> chose that the user cannot make entries older than the year 2020
-            if(year>2020 && monthAndDayIsValid(month,day))
-            {
-                date = LocalDate.of(year,month,day);
-
-                //checks if the given date is smaller than the current date (the user should not be able to enter a date which has not occurred yet)
-                if(!date.isAfter(LocalDate.now())){ //--> the line of code "date.isAfter(LocalDate.now())" was suggested by IntelliJ
-                    validDateGiven = true; //breaks this while loop
-                }
-                else{
-                    System.out.println("\n---Input error! Please enter a date that has occurred already (nothing earlier than today's date).---\n");
-                }
-            }
-            else{
-                System.out.println("\n---Input error! Please enter a valid date.---\n");
-            }
-        }
+        //gets date from user
+        LocalDate date = validUserGivenDate(1);
 
         try
         {
@@ -404,38 +374,8 @@ public class MainApp {
             }
         }
 
-        //initiating values
-        boolean validDateGiven = false;
-        int year, month, day;
-        LocalDate date = null;
-
-        while(!validDateGiven)
-        {
-            //prompts and stores user input
-            System.out.println("\nEnter the year of when this expense commenced:");
-            year = keyboard.nextInt();
-            System.out.println("Enter the month of when this expense commenced:");
-            month = keyboard.nextInt();
-            System.out.println("Enter the day of when this expense commenced:");
-            day = keyboard.nextInt();
-
-            //validates user input ----> chose that the user cannot make entries older than the year 2020
-            if(year>2020 && monthAndDayIsValid(month,day))
-            {
-                date = LocalDate.of(year,month,day);
-
-                //checks if the given date is smaller than the current date (the user should not be able to enter a date which has not occurred yet)
-                if(!date.isAfter(LocalDate.now())){ //--> the line of code "date.isAfter(LocalDate.now())" was suggested by IntelliJ
-                    validDateGiven = true; //breaks this while loop
-                }
-                else{
-                    System.out.println("\n---Input error! Please enter a date that has occurred already (nothing earlier than today's date).---\n");
-                }
-            }
-            else{
-                System.out.println("\n---Input error! Please enter a valid date.---\n");
-            }
-        }
+        //gets date from user
+        LocalDate date = validUserGivenDate(2);
 
         try
         {
@@ -569,6 +509,55 @@ public class MainApp {
         return monthAndDayValid;
     }
 
+    //method for returning a valid LocalDate created by the user
+    public static LocalDate validUserGivenDate(int expenseOrIncome)
+    {
+        //initiating values
+        LocalDate date = null; //return value
+        Scanner keyboard = new Scanner(System.in); //for user input
+        boolean validDateGiven = false;
+        int year, month, day;
+        String recordType = "";
+
+        if(expenseOrIncome == 1) {
+            recordType = "expense";
+        }
+        else if(expenseOrIncome == 2) {
+            recordType = "income";
+        }
+
+        while(!validDateGiven)
+        {
+            //prompts and stores user input
+            System.out.println("\nEnter the year of when this "+ recordType +" commenced:");
+            year = keyboard.nextInt();
+            System.out.println("Enter the month of when this "+ recordType +" commenced:");
+            month = keyboard.nextInt();
+            System.out.println("Enter the day of when this "+ recordType +" commenced:");
+            day = keyboard.nextInt();
+
+            //validates user input ----> chose that the user cannot make entries older than the year 2020
+            if(year>2020 && monthAndDayIsValid(month,day))
+            {
+                date = LocalDate.of(year,month,day);
+
+                //checks if the given date is smaller than the current date (the user should not be able to enter a date which has not occurred yet)
+                if(!date.isAfter(LocalDate.now())){ //--> the line of code "date.isAfter(LocalDate.now())" was suggested by IntelliJ
+                    validDateGiven = true; //breaks this while loop
+                }
+                else{
+                    System.out.println("\n---Input error! Please enter a date that has occurred already (nothing earlier than today's date).---\n");
+                }
+            }
+            else{
+                System.out.println("\n---Input error! Please enter a valid date.---\n");
+            }
+        }
+
+        return date;
+    }
+
+    //method for merging two YearMonth type lists into one in a way that it stores only distinct values
     public static List<YearMonth> getListOfDistinctYearMonthConsideringBothIncomeAndExpenses(List<YearMonth> listOfDistinctYearMonthConsideringExpenses, List<YearMonth> listOfDistinctYearMonthConsideringIncome)
     {
         List<YearMonth> listOfDistinctYearMonthConsideringIncomesAndExpenses = new ArrayList<>();

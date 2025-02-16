@@ -1,6 +1,5 @@
 package DAOs;
 
-import DTOs.YearMonth;
 import DTOs.Expense;
 import Exceptions.DaoException;
 

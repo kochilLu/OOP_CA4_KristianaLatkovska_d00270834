@@ -1,7 +1,6 @@
 package DAOs;
 
 import DTOs.Income;
-import DTOs.YearMonth;
 import Exceptions.DaoException;
 
 import java.util.List;
