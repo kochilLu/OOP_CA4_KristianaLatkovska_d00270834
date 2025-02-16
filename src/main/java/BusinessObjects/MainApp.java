@@ -48,10 +48,7 @@ public class MainApp {
                     viewAllExpenses(IExpenseDao);
                     break;
                 case 2:
-                    // take user input for creating a new expense and store it in multiple variables
-                    // verify if the user input is valid (if not, ask for user input again)
-                    // once the user input is valid, create and expense object
-                    // add the expense type object to the database
+                    addNewExpense(IExpenseDao);
                     break;
                 case 3:
                     deleteExistingExpense(IExpenseDao);
@@ -281,6 +278,81 @@ public class MainApp {
         }
     }
 
+    public static void addNewExpense(ExpenseDaoInterface expenseDao)
+    {
+        Scanner keyboard = new Scanner(System.in); //for user input
+
+        //initiating values
+        boolean validTitleCategoryAmountGiven = false;
+        String title = "";
+        String category = "";
+        double amount = 0.0;
+
+        while(!validTitleCategoryAmountGiven)
+        {
+            //prompts and stores user input
+            System.out.println("Enter the title of the expense (max 20 character long):");
+            title = keyboard.nextLine();
+            System.out.println("Enter the category of the expense (max 15 character long):");
+            category = keyboard.nextLine();
+            System.out.println("Enter the amount spent on the expense (more than 0.00):");
+            amount = keyboard.nextDouble();
+
+            //validates user input
+            if(title.length() <= 20 && category.length() <=15 && amount > 0.0) {
+                validTitleCategoryAmountGiven = true; //breaks this while loop
+            }
+            else{
+                System.out.println("\n---Input error! Please enter input as specified.---\n");
+            }
+        }
+
+        //initiating values
+        boolean validDateGiven = false;
+        int year, month, day;
+        LocalDate date = null;
+
+        while(!validDateGiven)
+        {
+            //prompts and stores user input
+            System.out.println("\nEnter the year of when this expense commenced:");
+            year = keyboard.nextInt();
+            System.out.println("Enter the month of when this expense commenced:");
+            month = keyboard.nextInt();
+            System.out.println("Enter the day of when this expense commenced:");
+            day = keyboard.nextInt();
+
+            //validates user input ----> chose that the user cannot make entries older than the year 2020
+            if(year>2020 && monthAndDayIsValid(month,day))
+            {
+                date = LocalDate.of(year,month,day);
+
+                //checks if the given date is smaller than the current date (the user should not be able to enter a date which has not occurred yet)
+                if(!date.isAfter(LocalDate.now())){ //--> the line of code "date.isAfter(LocalDate.now())" was suggested by IntelliJ
+                    validDateGiven = true; //breaks this while loop
+                }
+                else{
+                    System.out.println("\n---Input error! Please enter a valid date.---\n");
+                }
+            }
+            else{
+                System.out.println("\n---Input error! Please enter a valid date.---\n");
+            }
+        }
+
+        try
+        {
+            //creates and expense object
+            Expense newExpense = new Expense(title, category, amount, date);
+            // add the expense type object to the database
+            expenseDao.addNewExpense(newExpense);
+            //inform user of successfully adding a new expense
+            System.out.println("\n---A new expense has been successfully created---\n");
+        }
+        catch( DaoException e ){
+            e.printStackTrace();
+        }
+    }
 
 
     //------------------------------------------------------------------------------------------------------------------
@@ -361,5 +433,43 @@ public class MainApp {
         }
 
         return totalAmountSpent;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // other methods
+    //------------------------------------------------------------------------------------------------------------------
+    //method for determining if the given date is valid
+    public static boolean monthAndDayIsValid(int month, int day)
+    {
+        boolean monthAndDayValid = false;
+
+        if(month > 0 && month <= 12)
+        {
+            switch(month)
+            {
+                case 1,3,5,7,8,10,12:
+                    if(day>0 && day<=31)
+                    {
+                        monthAndDayValid = true;
+                    }
+                    break;
+
+                case 2:
+                    if(day>0 && day<=28)
+                    {
+                        monthAndDayValid = true;
+                    }
+                    break;
+
+                case 4,6,9,11:
+                    if(day>0 && day<=30)
+                    {
+                        monthAndDayValid = true;
+                    }
+                    break;
+            }
+        }
+
+        return monthAndDayValid;
     }
 }
