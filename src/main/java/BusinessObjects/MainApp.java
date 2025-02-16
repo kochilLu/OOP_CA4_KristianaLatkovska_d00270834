@@ -54,14 +54,7 @@ public class MainApp {
                     // add the expense type object to the database
                     break;
                 case 3:
-                    // retrieve a list of all expense ids
-                    // display the list of expense ids to the user
-                    // ask for the user to pick one id
-                    // check if the user's id is valid (if not, ask them to enter a valid one)
-                    // retrieve an Expense object with that chosen id
-                    // display that expense object neatly
-                    // ask for user confirmation to delete the expense (if cancels, nothing happens)
-                    // if user agrees, the expense with that id gets deleted from the database
+                    deleteExistingExpense(IExpenseDao);
                     break;
                 case 4:
                     viewAllIncome(IIncomeDao);
@@ -83,7 +76,7 @@ public class MainApp {
                     // if user agrees, the income with that id gets deleted from the database
                     break;
                 case 7:
-                    //initiating values
+                /*    //initiating values
                     boolean validUserInput = false;
                     int year = 0;
                     int month = 0;
@@ -105,6 +98,7 @@ public class MainApp {
 
                     //displaying information about income and expenses based on the user's chosen month and year
                     viewExpensesAndIncomeOfParticularMonthOfYear(year, month, IIncomeDao, IExpenseDao);
+                */
                     break;
             }
         }while(appIsRunning);
@@ -168,6 +162,66 @@ public class MainApp {
 
             // display the total money left at that specific time period
             System.out.printf("Total Money left at the end of the month (considering only these expenses and income): %.2f euro\n\n", getIncomeAmount(listOfIncomeOfParticularMonthOfYear)-getExpensesAmount(listOfExpensesOfParticularMonthOfYear));
+        }
+        catch( DaoException e ){
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteExistingExpense(ExpenseDaoInterface expenseDao)
+    {
+        Scanner keyboard = new Scanner(System.in); //for user input
+
+        try
+        {
+            // retrieves and stores a list of all expense ids
+            List<Integer> expenseIds = expenseDao.getListOfAllExpenseIds();
+
+            boolean validUserInput = false; //for controlling that the user enters a valid id
+            boolean validUserConfirmation = false; //for controlling that the user gives a valid confirmation of action
+            int id = 0; //initiating the value of user's input
+
+            while(!validUserInput)
+            {
+                //prompt's the user to choose an id
+                System.out.println("Pick the ID of the expense you want to delete:" + expenseIds);
+                id = keyboard.nextInt();
+
+                //check if the user's id is valid (if not, ask them to enter a valid one)
+                if(expenseIds.contains(id)) {
+                    validUserInput = true;
+                }
+                else{
+                    System.out.println("Invalid input. Please pick one of the offered IDs");
+                }
+            }
+
+            // displaying an Expense object with the users chosen id
+            displayOneExpense(expenseDao.getExpenseById(id));
+
+            // ask for user confirmation to delete the expense (if cancels, nothing happens)
+            while(!validUserConfirmation)
+            {
+                //prompting user input
+                System.out.println("\nAre you sure you want to delete this expense?\nPress 1 for yes or 0 for no");
+                int userConfirmation = keyboard.nextInt();
+
+                //evaluating user input
+                if(userConfirmation == 1) //user agrees to delete expense
+                {
+                    System.out.println("\n---The expense with the id " + id + " has been deleted---\n");
+                    expenseDao.deleteExistingExpense(id); //deletes the expense from the database
+                    validUserConfirmation = true; //ends while loop, returns to the main menu
+                }
+                else if(userConfirmation == 0) //user cancels expense deletion
+                {
+                    System.out.println("\n---The deletion of expense with the id " + id + " has been canceled---\n");
+                    validUserConfirmation = true; //ends while loop, returns to the main menu
+                }
+                else{ //user gives invalid input
+                    System.out.println("Input error! Please pick one of the given answers.");
+                }
+            }
         }
         catch( DaoException e ){
             e.printStackTrace();
