@@ -19,6 +19,17 @@ public class MainApp {
         ExpenseDaoInterface IExpenseDao = new MySqlExpenseDao();
         IncomeDaoInterface IIncomeDao = new MySqlIncomeDao();
 
+        //test
+        try
+        {
+            System.out.println("\n\n" + IExpenseDao.getListOfDistinctYearMonthsOfExpenses() + "\n\n");
+
+        }
+        catch (DaoException e) {
+            e.printStackTrace();
+        }
+
+
         boolean appIsRunning = true; //for running the app
 
         //application
@@ -63,29 +74,7 @@ public class MainApp {
                     deleteExistingIncome(IIncomeDao);
                     break;
                 case 7:
-                /*    //initiating values
-                    boolean validUserInput = false;
-                    int year = 0;
-                    int month = 0;
-
-                    //getting user input
-                    while(!validUserInput)
-                    {
-                        System.out.println("Enter a year: ");
-                        year = keyboard.nextInt();
-                        System.out.println("Enter a month: ");
-                        month = keyboard.nextInt();
-
-                        //validating user input
-                        //if(validYear(year) && validMonth(month))
-                        //{
-                        //    validUserInput = true;
-                        //}
-                    }
-
-                    //displaying information about income and expenses based on the user's chosen month and year
-                    viewExpensesAndIncomeOfParticularMonthOfYear(year, month, IIncomeDao, IExpenseDao);
-                */
+                    //...
                     break;
             }
         }while(appIsRunning);
@@ -131,10 +120,40 @@ public class MainApp {
         }
     }
 
-    public static void viewExpensesAndIncomeOfParticularMonthOfYear(int year, int month, IncomeDaoInterface incomeDao, ExpenseDaoInterface expenseDao)
+    public static void viewExpensesAndIncomeOfParticularMonthOfYear(IncomeDaoInterface incomeDao, ExpenseDaoInterface expenseDao)
     {
+        Scanner keyboard = new Scanner(System.in); //for user input
+
+        //initiating values
+        boolean validUserInput = false;
+        int year = 0;
+        int month = 0;
+        LocalDate today = LocalDate.now();
+
+        //display the years and months the database has entries for (no matter if its an income or expense)
+        //...
+
         try
         {
+            //getting valid user input
+            while(!validUserInput)
+            {
+                System.out.println("Enter a year of which you would like to view the income & expenses summary: ");
+                year = keyboard.nextInt();
+                System.out.println("Enter a month of which you would like to view the income & expenses summary: ");
+                month = keyboard.nextInt();
+
+                //validating user input
+                if((year > 2020 && year <= today.getYear()) && (month>0 && month<=12))
+                {
+                    //and if the database has entries for at least one of the tables (expenses or income) for that time
+
+
+                    validUserInput = true;
+                }
+            }
+
+            //displaying information about income and expenses based on the user's chosen month and year
             // retrieving and storing a list of income & expenses at a certain month of a certain year
             List<Income> listOfIncomeOfParticularMonthOfYear = incomeDao.getListOfIncomeOfCertainMonth(year, month);
             List<Expense> listOfExpensesOfParticularMonthOfYear = expenseDao.getListOfExpensesOfCertainMonth(year, month);

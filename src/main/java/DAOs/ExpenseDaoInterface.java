@@ -1,5 +1,6 @@
 package DAOs;
 
+import DTOs.YearMonth;
 import DTOs.Expense;
 import Exceptions.DaoException;
 
@@ -25,4 +26,7 @@ public interface ExpenseDaoInterface {
 
     Expense getExpenseById(int expenseId) throws DaoException;
     //returns an expense from the database based on its id number
+
+    List<YearMonth> getListOfDistinctYearMonthsOfExpenses() throws DaoException;
+    //returns a list of YearMonth type objects which refer to entries in the database "Expenses" table distinct combination of year and month
 }
