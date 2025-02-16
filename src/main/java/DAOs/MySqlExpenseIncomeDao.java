@@ -27,13 +27,10 @@ public class MySqlExpenseIncomeDao extends MySqlDao implements ExpenseIncomeDaoI
             connection = this.getConnection();
 
             //preparing the SQL query
-            String query = "SELECT DISTINCT MONTH(dateIncurred) AS `Month`, YEAR(dateIncurred) AS `Year` FROM ? GROUP BY MONTH(dateIncurred), YEAR(dateIncurred);";
+            String query = "SELECT DISTINCT MONTH(dateIncurred) AS `Month`, YEAR(dateIncurred) AS `Year` FROM "+tableName+" GROUP BY MONTH(dateIncurred), YEAR(dateIncurred)";
             //query from Emulite (2019) on https://stackoverflow.com/questions/50775116/mysql-query-select-distinct-month-and-year
             //
             preparedStatement = connection.prepareStatement(query);
-
-            //adding the table name to complete the query
-            preparedStatement.setString(1, tableName);
 
             //executing the query
             resultSet = preparedStatement.executeQuery();

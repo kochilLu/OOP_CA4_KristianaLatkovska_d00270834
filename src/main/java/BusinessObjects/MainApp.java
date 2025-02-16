@@ -1,12 +1,14 @@
 package BusinessObjects;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import DAOs.*;
 import DTOs.Expense;
 import DTOs.Income;
+import DTOs.YearMonth;
 import Exceptions.DaoException;
 
 public class MainApp {
@@ -18,16 +20,22 @@ public class MainApp {
         //for accessing the database's data
         ExpenseDaoInterface IExpenseDao = new MySqlExpenseDao();
         IncomeDaoInterface IIncomeDao = new MySqlIncomeDao();
+        ExpenseIncomeDaoInterface IExpenseIncomeDao = new MySqlExpenseIncomeDao();
+
 
         //test
         try
         {
-            System.out.println("\n\n" + IExpenseDao.getListOfDistinctYearMonthsOfExpenses() + "\n\n");
+            System.out.println("Expenses distinct entries: " + IExpenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("expenses"));
+            System.out.println("Income distinct entries: " + IExpenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("income"));
+
+            System.out.println("\n\n" + getListOfDistinctYearMonthConsideringBothIncomeAndExpenses(IExpenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("expenses"),IExpenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("income")) + "\n\n");
 
         }
         catch (DaoException e) {
             e.printStackTrace();
         }
+
 
 
         boolean appIsRunning = true; //for running the app
@@ -560,5 +568,24 @@ public class MainApp {
         }
 
         return monthAndDayValid;
+    }
+
+    public static List<YearMonth> getListOfDistinctYearMonthConsideringBothIncomeAndExpenses(List<YearMonth> listOfDistinctYearMonthConsideringExpenses, List<YearMonth> listOfDistinctYearMonthConsideringIncome)
+    {
+        List<YearMonth> listOfDistinctYearMonthConsideringIncomesAndExpenses = new ArrayList<>();
+
+        //adding one of the parameter lists fully to the new list that is going to be returned
+        listOfDistinctYearMonthConsideringIncomesAndExpenses.addAll(listOfDistinctYearMonthConsideringExpenses);
+
+        //merging both parameter lists into one, leaving only distinct values in the new return value list
+        for(YearMonth ym : listOfDistinctYearMonthConsideringIncome)
+        {
+            if(!listOfDistinctYearMonthConsideringIncomesAndExpenses.contains(ym)) //if one list does not contain a certain element
+            {
+                listOfDistinctYearMonthConsideringIncomesAndExpenses.add(ym); //adds that element to the list
+            }
+        }
+
+        return listOfDistinctYearMonthConsideringIncomesAndExpenses;
     }
 }
