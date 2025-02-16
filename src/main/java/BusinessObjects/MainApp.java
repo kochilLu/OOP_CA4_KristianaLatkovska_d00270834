@@ -83,14 +83,28 @@ public class MainApp {
                     // if user agrees, the income with that id gets deleted from the database
                     break;
                 case 7:
-                    // retrieve a list of income at a certain month at a certain year
-                    // retrieve a list of expenses at a certain month at a certain year
-                    // neatly display the income list
-                    // neatly display the expense list
-                    // calculate the income earned
-                    // calculate the expenses spent
-                    // display the mount earned and spent during that specific time period
-                    // display the money left at that specific time period (income - expenses)
+                    //initiating values
+                    boolean validUserInput = false;
+                    int year = 0;
+                    int month = 0;
+
+                    //getting user input
+                    while(!validUserInput)
+                    {
+                        System.out.println("Enter a year: ");
+                        year = keyboard.nextInt();
+                        System.out.println("Enter a month: ");
+                        month = keyboard.nextInt();
+
+                        //validating user input
+                        //if(validYear(year) && validMonth(month))
+                        //{
+                        //    validUserInput = true;
+                        //}
+                    }
+
+                    //displaying information about income and expenses based on the user's chosen month and year
+                    viewExpensesAndIncomeOfParticularMonthOfYear(year, month, IIncomeDao, IExpenseDao);
                     break;
             }
         }while(appIsRunning);
@@ -130,6 +144,30 @@ public class MainApp {
             displayAllIncome(listOfAllIncome);
             // displays the amount earned from all income in total
             System.out.printf("Total amount earned from income: %.2f euro\n\n", getIncomeAmount(listOfAllIncome));
+        }
+        catch( DaoException e ){
+            e.printStackTrace();
+        }
+    }
+
+    public static void viewExpensesAndIncomeOfParticularMonthOfYear(int year, int month, IncomeDaoInterface incomeDao, ExpenseDaoInterface expenseDao)
+    {
+        try
+        {
+            // retrieving and storing a list of income & expenses at a certain month of a certain year
+            List<Income> listOfIncomeOfParticularMonthOfYear = incomeDao.getListOfIncomeOfCertainMonth(year, month);
+            List<Expense> listOfExpensesOfParticularMonthOfYear = expenseDao.getListOfExpensesOfCertainMonth(year, month);
+
+            // neatly display the income & expense list
+            displayAllExpenses(listOfExpensesOfParticularMonthOfYear);
+            displayAllIncome(listOfIncomeOfParticularMonthOfYear);
+
+            // display the income earned & expenses spent
+            System.out.printf("Money earned this month from income: %.2f euro\n", getIncomeAmount(listOfIncomeOfParticularMonthOfYear));
+            System.out.printf("Money spent this month for expenses: %.2f euro\n", getExpensesAmount(listOfExpensesOfParticularMonthOfYear));
+
+            // display the total money left at that specific time period
+            System.out.printf("Total Money left at the end of the month (considering only these expenses and income): %.2f euro\n\n", getIncomeAmount(listOfIncomeOfParticularMonthOfYear)-getExpensesAmount(listOfExpensesOfParticularMonthOfYear));
         }
         catch( DaoException e ){
             e.printStackTrace();
