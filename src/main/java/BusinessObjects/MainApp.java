@@ -66,14 +66,7 @@ public class MainApp {
                     // add the income type object to the database
                     break;
                 case 6:
-                    // retrieve a list of all income ids
-                    // display the list of income ids to the user
-                    // ask for the user to pick one id
-                    // check if the user's id is valid (if not, ask them to enter a valid one)
-                    // retrieve an income object based on the user's given id
-                    // display neatly the retrieved income
-                    // ask for user confirmation to delete the income (if cancels, nothing happens)
-                    // if user agrees, the income with that id gets deleted from the database
+                    deleteExistingIncome(IIncomeDao);
                     break;
                 case 7:
                 /*    //initiating values
@@ -227,6 +220,68 @@ public class MainApp {
             e.printStackTrace();
         }
     }
+
+    public static void deleteExistingIncome(IncomeDaoInterface incomeDao)
+    {
+        Scanner keyboard = new Scanner(System.in); //for user input
+
+        try
+        {
+            // retrieves and stores a list of all expense ids
+            List<Integer> incomeIds = incomeDao.getListOfAllIncomeIds();
+
+            boolean validUserInput = false; //for controlling that the user enters a valid id
+            boolean validUserConfirmation = false; //for controlling that the user gives a valid confirmation of action
+            int id = 0; //initiating the value of user's input
+
+            while(!validUserInput)
+            {
+                //prompt's the user to choose an id
+                System.out.println("Pick the ID of the income you want to delete:" + incomeIds);
+                id = keyboard.nextInt();
+
+                //check if the user's id is valid (if not, ask them to enter a valid one)
+                if(incomeIds.contains(id)) {
+                    validUserInput = true;
+                }
+                else{
+                    System.out.println("Invalid input. Please pick one of the offered IDs");
+                }
+            }
+
+            // displaying an Income object with the users chosen id
+            displayOneIncome(incomeDao.getIncomeById(id));
+
+            // ask for user confirmation to delete the income (if cancels, nothing happens)
+            while(!validUserConfirmation)
+            {
+                //prompting user input
+                System.out.println("\nAre you sure you want to delete this income?\nPress 1 for yes or 0 for no");
+                int userConfirmation = keyboard.nextInt();
+
+                //evaluating user input
+                if(userConfirmation == 1) //user agrees to delete income
+                {
+                    System.out.println("\n---The income with the id " + id + " has been deleted---\n");
+                    incomeDao.deleteExistingIncome(id); //deletes the income from the database
+                    validUserConfirmation = true; //ends while loop, returns to the main menu
+                }
+                else if(userConfirmation == 0) //user cancels income deletion
+                {
+                    System.out.println("\n---The deletion of income with the id " + id + " has been canceled---\n");
+                    validUserConfirmation = true; //ends while loop, returns to the main menu
+                }
+                else{ //user gives invalid input
+                    System.out.println("Input error! Please pick one of the given answers.");
+                }
+            }
+        }
+        catch( DaoException e ){
+            e.printStackTrace();
+        }
+    }
+
+
 
     //------------------------------------------------------------------------------------------------------------------
     // methods for displaying information neatly
