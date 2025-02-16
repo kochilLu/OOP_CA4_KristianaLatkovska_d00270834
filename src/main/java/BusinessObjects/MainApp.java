@@ -22,7 +22,7 @@ public class MainApp {
         IncomeDaoInterface IIncomeDao = new MySqlIncomeDao();
         ExpenseIncomeDaoInterface IExpenseIncomeDao = new MySqlExpenseIncomeDao();
 
-
+/*
         //test
         try
         {
@@ -35,7 +35,7 @@ public class MainApp {
         catch (DaoException e) {
             e.printStackTrace();
         }
-
+*/
 
 
         boolean appIsRunning = true; //for running the app
@@ -82,7 +82,7 @@ public class MainApp {
                     deleteExistingIncome(IIncomeDao);
                     break;
                 case 7:
-                    //...
+                    viewExpensesAndIncomeOfParticularMonthOfYear(IIncomeDao, IExpenseDao, IExpenseIncomeDao);
                     break;
             }
         }while(appIsRunning);
@@ -128,7 +128,7 @@ public class MainApp {
         }
     }
 
-    public static void viewExpensesAndIncomeOfParticularMonthOfYear(IncomeDaoInterface incomeDao, ExpenseDaoInterface expenseDao)
+    public static void viewExpensesAndIncomeOfParticularMonthOfYear(IncomeDaoInterface incomeDao, ExpenseDaoInterface expenseDao, ExpenseIncomeDaoInterface expenseIncomeDao)
     {
         Scanner keyboard = new Scanner(System.in); //for user input
 
@@ -138,29 +138,30 @@ public class MainApp {
         int month = 0;
         LocalDate today = LocalDate.now();
 
-        //display the years and months the database has entries for (no matter if its an income or expense)
-        //...
-
         try
         {
             //getting valid user input
             while(!validUserInput)
             {
-                System.out.println("Enter a year of which you would like to view the income & expenses summary: ");
+                List<YearMonth> listOfYearMonthCombination = getListOfDistinctYearMonthConsideringBothIncomeAndExpenses(expenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("expenses"),expenseIncomeDao.getListOfDistinctYearMonthsOfExpensesOrIncome("income"));
+
+                //display the distinct years and month combinations the database has entries for (no matter if its an income or expense)
+                System.out.println("List of all distinct month and year combinations of entries of Income and expenses: " +  listOfYearMonthCombination);
+                //prompts and stores user input
+                System.out.println("Enter a year of which you would like to view the income & expenses summary for: ");
                 year = keyboard.nextInt();
-                System.out.println("Enter a month of which you would like to view the income & expenses summary: ");
+                System.out.println("Enter a month of which you would like to view the income & expenses summary for: ");
                 month = keyboard.nextInt();
 
                 //validating user input
-                if((year > 2020 && year <= today.getYear()) && (month>0 && month<=12))
+                if((year > 2020 && year <= today.getYear()) && (month>0 && month<=12) && (listOfYearMonthCombination.contains(new YearMonth(year,month))))
                 {
-                    //and if the database has entries for at least one of the tables (expenses or income) for that time
-
-
                     validUserInput = true;
                 }
+                else {
+                    System.out.println("\n---Input error! Please pick one of the offered year and month combinations.---\n");
+                }
             }
-
             //displaying information about income and expenses based on the user's chosen month and year
             // retrieving and storing a list of income & expenses at a certain month of a certain year
             List<Income> listOfIncomeOfParticularMonthOfYear = incomeDao.getListOfIncomeOfCertainMonth(year, month);
