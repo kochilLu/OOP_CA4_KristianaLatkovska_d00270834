@@ -2,6 +2,7 @@ package DAOs;
 
 import DTOs.Expense;
 import DTOs.Income;
+import DTOs.YearMonth;
 import Exceptions.DaoException;
 
 import java.sql.*;
